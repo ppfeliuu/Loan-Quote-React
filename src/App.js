@@ -1,15 +1,13 @@
-import React, { Component, Fragment } from 'react';
-
-import './normalize.css';
-import './skeleton.css';
+import React, { Fragment, useState } from 'react';
 
 import FormQuote from './components/FormQuote';
 import Results from '././components/Results';
-import { calculateTotal } from './helpers';
+
 import Message from './components/Message';
 import Spinner from './components/Spinner';
+import Header from './components/Header';
 
-class App extends Component {
+/* class App extends Component {
 
   state = {
     total: '',
@@ -67,6 +65,52 @@ class App extends Component {
       </Fragment>
     );
   }
+} 
+
+export default App;
+*/
+
+
+
+const App = () => {
+
+  const [cantidad, setCantidad] = useState(0);
+  const [plazo, setPlazo] = useState('');
+  const [total, setTotal] = useState(0);
+  const [load, setLoad] = useState(false);
+
+  let componente;
+
+  if(load) {
+    componente = <Spinner />
+  } else if(total === 0) {
+    componente = <Message />
+  } else {
+    componente = <Results  total={total} time={plazo} quantity={cantidad}/>
+  }
+
+  return (
+    <Fragment>
+        <Header title={'Loan Quote'}/>
+
+        <div className="container">
+          <FormQuote 
+            cantidad={cantidad}
+            setCantidad={setCantidad}
+            plazo={plazo}
+            setPlazo={setPlazo}
+            total={total}
+            setTotal={setTotal}
+            setLoad={setLoad}
+          />
+          <div className="mensajes">
+            {componente}
+          </div>
+          
+        </div>
+    </Fragment>
+  )
 }
 
 export default App;
+
